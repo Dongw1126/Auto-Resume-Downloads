@@ -12,7 +12,8 @@
     "activeTab",
     "declarativeContent",
     "tabs",
-    "storage"
+    "storage",
+    "downloads"
   ],
 
   "background": {
