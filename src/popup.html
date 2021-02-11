@@ -10,8 +10,21 @@
     <label class="switch">
       <input type="checkbox" id="start">
       <span class="slider round"></span>
-    </label><br><br>
-    Applied to items canceled by the user <input type="checkbox" id="cancelItem">
+    </label><br><br><hr>
+
+    <details>
+    <summary>Settings</summary>
+      <br>
+      <div class="checks etrans">
+        <input type="checkbox" id="canceledItem">
+        <label for="canceledItem">Apply to canceled items</label>
+      </div>
+      <br>
+      <br>
+      <br>
+      <button class="apply-button" type="button" name="apply">Apply</button>
+    </details>
+
     <script type="text/javascript" src="popup.js"></script>
   </body>
 </html>

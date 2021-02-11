@@ -11,7 +11,7 @@ function restartDownload() {
 
 chrome.extension.onConnect.addListener(function(port) {
   console.log("background : connected");
-  var showMax = 50;
+  var showMax = 100;
   var downloadItems = {};
 
   port.onMessage.addListener(function(msg) {
