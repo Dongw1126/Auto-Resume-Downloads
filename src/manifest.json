@@ -12,9 +12,6 @@
   },
 
   "permissions": [
-    "activeTab",
-    "declarativeContent",
-    "tabs",
     "storage",
     "downloads"
   ],
