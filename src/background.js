@@ -1,7 +1,6 @@
 chrome.extension.onConnect.addListener(function(port) {
-     console.log("Connected .....");
+     console.log("background : connected");
      port.onMessage.addListener(function(msg) {
-          console.log("message recieved" + msg);
-          port.postMessage("Hi Popup.js");
+        console.log(msg);
      });
-})
+});
