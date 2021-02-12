@@ -75,6 +75,7 @@ window.onload = function() {
       result.logText = "";
     }
     logTextArea.value = result.logText;
+    logTextArea.scrollTop = logTextArea.scrollHeight;
   });
 }
 
@@ -85,7 +86,9 @@ chrome.extension.onConnect.addListener(function(port) {
     let today = new Date();
     var logTextArea = document.getElementById("downloadLog");
     var logStr = today.toLocaleString() + "\n" + msg.logAtBackground + "\n";
+
     logTextArea.value += logStr;
+    logTextArea.scrollTop = logTextArea.scrollHeight;
 
     chrome.storage.sync.set({
       logText: logTextArea.value

@@ -44,7 +44,6 @@ function restartDownload() {
     // check items in the list and resume
     results.forEach((item) => {
       if (item.canResume) {
-        //console.log(pausedItem);
         if (!item.paused || pausedItem) {
           //console.log(results);
           sendLog(("resume : " + item.filename));
@@ -71,7 +70,6 @@ chrome.storage.sync.get(['turnOn'], function(result) {
   if (result.turnOn) {
     // if last state is on, start Auto resume
     arr = stopAllInterval(arr);
-    sendLog("auto resume started");
 
     runFunc = setInterval(restartDownload, intTime * 1000);
     arr.push(runFunc);
