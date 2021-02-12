@@ -6,8 +6,10 @@ function sendLog(str) {
   var port = chrome.extension.connect({
     name: "connect popup"
   });
+
+  str += "\n";
   port.postMessage({
-    logAtBackground : str
+    logAtBackground: str
   });
 }
 
@@ -43,9 +45,12 @@ function restartDownload() {
     // check items in the list and resume
     results.forEach((item) => {
       if (item.canResume) {
-        console.log(results);
-        sendLog(("resume : " + item.filename));
-        chrome.downloads.resume(item.id, function() {});
+        console.log(pausedItem);
+        if (!item.paused || pausedItem) {
+          console.log(results);
+          sendLog(("resume : " + item.filename));
+          chrome.downloads.resume(item.id, function() {});
+        }
       }
     });
   });
@@ -69,7 +74,7 @@ chrome.storage.sync.get(['turnOn'], function(result) {
     arr = stopAllInterval(arr);
     sendLog("auto resume started");
 
-    runFunc = setInterval(restartDownload, intTime*1000);
+    runFunc = setInterval(restartDownload, intTime * 1000);
     arr.push(runFunc);
   }
 });
@@ -91,11 +96,11 @@ chrome.extension.onConnect.addListener(function(port) {
     if (msg.turnOn == true) {
       // auto resume start
       arr = stopAllInterval(arr);
-      sendLog("auto resume started");
+      sendLog("auto resume running");
       chrome.storage.sync.set({
         turnOn: true
       });
-      runFunc = setInterval(restartDownload, intTime*1000);
+      runFunc = setInterval(restartDownload, intTime * 1000);
       arr.push(runFunc);
     } else {
       // auto resume stop
