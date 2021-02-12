@@ -1,13 +1,23 @@
 var arr = []
 var intTime = 10;
-var canceledItem = false;
+var pausedItem = false;
+
+/* clear local storage
+   use only testing */
+function clearCache() {
+  chrome.storage.local.clear(function() {
+    var error = chrome.runtime.lastError;
+    if (error) {
+      console.error(error);
+    }
+  });
+}
 
 function timeBounder(t) {
   ret = Number(t);
-  if(ret <= 0) {
-    ret = 0;
-  }
-  else if(ret > 10000){
+  if (ret <= 0) {
+    ret = 1;
+  } else if (ret > 10000) {
     ret = 10000;
   }
 
@@ -31,23 +41,52 @@ function restartDownload() {
     orderBy: ['-startTime'],
     limit: showMax
   }, function(results) {
+    console.log(results);
     results.forEach((item) => {
       if (item.canResume) {
+        console.log(results);
+        console.log("resume id : " + item.id);
         chrome.downloads.resume(item.id, function() {});
       }
     });
   });
 }
 
+clearCache();
+// load last state
+chrome.storage.sync.get(['paused'], function(result) {
+  pausedItem = result.paused;
+  console.log(pausedItem);
+});
+
+chrome.storage.sync.get(['sec'], function(result) {
+  intTime = timeBounder(result.sec);
+  console.log(intTime);
+});
+
+chrome.storage.sync.get(['turnOn'], function(result) {
+  console.log(result.turnOn);
+  if (result.turnOn) {
+    arr = stopAllInterval(arr);
+    console.log("auto resume started");
+
+    runFunc = setInterval(restartDownload, intTime*1000);
+    arr.push(runFunc);
+  }
+});
+
+// main logic
+// connection with popup.js
 chrome.extension.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(msg) {
     console.log(msg);
+
     intTime = timeBounder(msg.sec);
-    canceledItem = msg.canceled;
+    pausedItem = msg.paused;
 
     chrome.storage.sync.set({
-      canceled: canceledItem,
-      sec : intTime
+      paused: pausedItem,
+      sec: intTime
     });
 
     if (msg.turnOn == true) {
@@ -58,7 +97,7 @@ chrome.extension.onConnect.addListener(function(port) {
         turnOn: true
       });
 
-      runFunc = setInterval(restartDownload, 1000);
+      runFunc = setInterval(restartDownload, intTime*1000);
       arr.push(runFunc);
     } else {
       console.log("auto resume stopped");

@@ -1,10 +1,10 @@
-function sendMsg(_startSwitch, _canceledSett, _intervalSett) {
+function sendMsg(_startSwitch, _pausedSett, _intervalSett) {
   var port = chrome.extension.connect({
     name: "connect background"
   });
   port.postMessage({
     turnOn: _startSwitch.checked,
-    canceled: _canceledSett.checked,
+    paused: _pausedSett.checked,
     sec: _intervalSett.value
   });
 }
@@ -12,34 +12,37 @@ function sendMsg(_startSwitch, _canceledSett, _intervalSett) {
 window.onload = function() {
   var startSwitch = document.getElementById("start");
   var applyButton = document.getElementById("apply-button");
-  var canceledSett = document.getElementById("canceledItem");
+  var pausedSett = document.getElementById("pausedItem");
   var intervalSett = document.getElementById("intervalTime");
 
   startSwitch.addEventListener("click", function() {
-    sendMsg(startSwitch, canceledSett, intervalSett);
+    sendMsg(startSwitch, pausedSett, intervalSett);
   });
   applyButton.addEventListener("click", function() {
-    sendMsg(startSwitch, canceledSett, intervalSett);
+    sendMsg(startSwitch, pausedSett, intervalSett);
   });
 
-  chrome.storage.sync.get(['turnOn'], function(result) {
-    console.log(result);
-    if (result.turnOn) {
-      startSwitch.checked = true;
+  chrome.storage.sync.get(['paused'], function(result) {
+    if (result.paused) {
+      pausedSett.checked = true;
     } else {
-      startSwitch.checked = false;
-    }
-  });
-
-  chrome.storage.sync.get(['canceled'], function(result) {
-    if (result.canceled) {
-      canceledSett.checked = true;
-    } else {
-      canceledSett.checked = false;
+      pausedSett.checked = false;
     }
   });
 
   chrome.storage.sync.get(['sec'], function(result) {
+    if(typeof result.sec == "undefined") {
+      result.sec = 10;
+    }
     intervalSett.value = result.sec;
+  });
+
+  chrome.storage.sync.get(['turnOn'], function(result) {
+    if (result.turnOn) {
+      startSwitch.checked = true;
+      sendMsg(startSwitch, pausedSett, intervalSett);
+    } else {
+      startSwitch.checked = false;
+    }
   });
 }

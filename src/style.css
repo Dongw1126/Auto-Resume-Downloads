@@ -9,11 +9,21 @@ body {
   background-color: #f8f8f8
 }
 
+#title {
+  display: inline;
+}
+
+#githubLink img{
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
 .content {
   display: inline-block;
   padding: 10px;
   width: 250px;
-  height: 300px;
+  height: 350px;
   background-color: white;
   box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
 }
