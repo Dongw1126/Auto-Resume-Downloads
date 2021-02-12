@@ -7,7 +7,7 @@ function sendLog(str) {
     name: "connect popup"
   });
   port.postMessage({
-    myLog : str
+    logAtBackground : str
   });
 }
 
@@ -23,6 +23,7 @@ function timeBoundary(t) {
 }
 
 function stopAllInterval(arr) {
+  //stop all interval functions
   arr.forEach(function(element) {
     clearInterval(element);
   });
@@ -33,17 +34,17 @@ function stopAllInterval(arr) {
 function restartDownload() {
   console.log("running");
 
-  var showMax = 100;
-
   chrome.downloads.search({
+    // get download list
     orderBy: ['-startTime'],
-    limit: showMax
+    limit: 100
   }, function(results) {
     console.log(results);
+    // check items in the list and resume
     results.forEach((item) => {
       if (item.canResume) {
         console.log(results);
-        console.log("resume id : " + item.id);
+        sendLog(("resume : " + item.filename));
         chrome.downloads.resume(item.id, function() {});
       }
     });
@@ -64,8 +65,9 @@ chrome.storage.sync.get(['sec'], function(result) {
 chrome.storage.sync.get(['turnOn'], function(result) {
   console.log(result.turnOn);
   if (result.turnOn) {
+    // if last state is on, start Auto resume
     arr = stopAllInterval(arr);
-    console.log("auto resume started");
+    sendLog("auto resume started");
 
     runFunc = setInterval(restartDownload, intTime*1000);
     arr.push(runFunc);
@@ -77,7 +79,7 @@ chrome.storage.sync.get(['turnOn'], function(result) {
 chrome.extension.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(msg) {
     console.log(msg);
-
+    // load values in msg
     intTime = timeBoundary(msg.sec);
     pausedItem = msg.paused;
 
@@ -87,18 +89,17 @@ chrome.extension.onConnect.addListener(function(port) {
     });
 
     if (msg.turnOn == true) {
+      // auto resume start
       arr = stopAllInterval(arr);
-      console.log("auto resume started");
-
+      sendLog("auto resume started");
       chrome.storage.sync.set({
         turnOn: true
       });
-
       runFunc = setInterval(restartDownload, intTime*1000);
       arr.push(runFunc);
     } else {
-      console.log("auto resume stopped");
-
+      // auto resume stop
+      sendLog("auto resume stopped");
       chrome.storage.sync.set({
         turnOn: false
       });

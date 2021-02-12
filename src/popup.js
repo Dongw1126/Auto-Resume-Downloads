@@ -1,3 +1,12 @@
+/*
+local storage values
+--------------------------------------
+turnOn : (bool) true => Auto resume on
+paused : (bool) true => resume paused items
+sec : (int) check download items interval
+logText : (string) log text in textarea (id = downloadLog)
+*/
+
 function sendMsg(_startSwitch, _pausedSett, _intervalSett) {
   var port = chrome.extension.connect({
     name: "connect background"
@@ -12,16 +21,31 @@ function sendMsg(_startSwitch, _pausedSett, _intervalSett) {
 window.onload = function() {
   var startSwitch = document.getElementById("start");
   var applyButton = document.getElementById("apply-button");
+  var clearButton = document.getElementById("clear-button");
   var pausedSett = document.getElementById("pausedItem");
   var intervalSett = document.getElementById("intervalTime");
+  var logTextArea = document.getElementById("downloadLog");
 
   startSwitch.addEventListener("click", function() {
     sendMsg(startSwitch, pausedSett, intervalSett);
   });
+
   applyButton.addEventListener("click", function() {
     sendMsg(startSwitch, pausedSett, intervalSett);
+    logTextArea.value += "Settings applied\n";
+    chrome.storage.sync.set({
+      logText: logTextArea.value
+    });
   });
 
+  clearButton.addEventListener("click", function() {
+    logTextArea.value = "";
+    chrome.storage.sync.set({
+      logText: logTextArea.value
+    });
+  });
+
+  //Load values in local storage
   chrome.storage.sync.get(['paused'], function(result) {
     if (result.paused) {
       pausedSett.checked = true;
@@ -31,7 +55,7 @@ window.onload = function() {
   });
 
   chrome.storage.sync.get(['sec'], function(result) {
-    if(typeof result.sec == "undefined") {
+    if (typeof result.sec == "undefined") {
       result.sec = 10;
     }
     intervalSett.value = result.sec;
@@ -45,4 +69,26 @@ window.onload = function() {
       startSwitch.checked = false;
     }
   });
+
+  chrome.storage.sync.get(['logText'], function(result) {
+    if (typeof result.logText == "undefined") {
+      result.logText = "";
+    }
+    logTextArea.value = result.logText;
+  });
 }
+
+// connection with background.js
+chrome.extension.onConnect.addListener(function(port) {
+  port.onMessage.addListener(function(msg) {
+    // listen log in background
+    let today = new Date();
+    var logTextArea = document.getElementById("downloadLog");
+    var logStr = today.toLocaleString() + "\n" + msg.logAtBackground + "\n";
+    logTextArea.value += logStr;
+
+    chrome.storage.sync.set({
+      logText: logTextArea.value
+    });
+  })
+});
