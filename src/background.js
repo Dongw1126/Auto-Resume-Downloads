@@ -34,20 +34,20 @@ function stopAllInterval(arr) {
 }
 
 function restartDownload() {
-  console.log("running");
+  //console.log("running");
 
   chrome.downloads.search({
     // get download list
     orderBy: ['-startTime'],
     limit: 100
   }, function(results) {
-    console.log(results);
+    //console.log(results);
     // check items in the list and resume
     results.forEach((item) => {
       if (item.canResume) {
-        console.log(pausedItem);
+        //console.log(pausedItem);
         if (!item.paused || pausedItem) {
-          console.log(results);
+          //console.log(results);
           sendLog(("resume : " + item.filename));
           chrome.downloads.resume(item.id, function() {});
         }
@@ -59,16 +59,16 @@ function restartDownload() {
 // load last state
 chrome.storage.sync.get(['paused'], function(result) {
   pausedItem = result.paused;
-  console.log(pausedItem);
+  //console.log(pausedItem);
 });
 
 chrome.storage.sync.get(['sec'], function(result) {
   intTime = timeBoundary(result.sec);
-  console.log(intTime);
+  //console.log(intTime);
 });
 
 chrome.storage.sync.get(['turnOn'], function(result) {
-  console.log(result.turnOn);
+  //console.log(result.turnOn);
   if (result.turnOn) {
     // if last state is on, start Auto resume
     arr = stopAllInterval(arr);
@@ -83,7 +83,7 @@ chrome.storage.sync.get(['turnOn'], function(result) {
 // connection with popup.js
 chrome.extension.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(msg) {
-    console.log(msg);
+    //console.log(msg);
     // load values in msg
     intTime = timeBoundary(msg.sec);
     pausedItem = msg.paused;

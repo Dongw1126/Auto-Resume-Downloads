@@ -1,7 +1,7 @@
 {
-  "name": "auto resume downloads",
+  "name": "Auto Resume Downloads",
   "version": "1.0.0",
-  "description": "Automatically resume downloading unintentionally interrupted.",
+  "description": "Chrome extension that automatically resumes downloads.",
 
   "icons": { "16": "icon16.png",
              "48": "icon48.png",
