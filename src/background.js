@@ -2,18 +2,16 @@ var arr = []
 var intTime = 10;
 var pausedItem = false;
 
-/* clear local storage
-   use only testing */
-function clearCache() {
-  chrome.storage.local.clear(function() {
-    var error = chrome.runtime.lastError;
-    if (error) {
-      console.error(error);
-    }
+function sendLog(str) {
+  var port = chrome.extension.connect({
+    name: "connect popup"
+  });
+  port.postMessage({
+    myLog : str
   });
 }
 
-function timeBounder(t) {
+function timeBoundary(t) {
   ret = Number(t);
   if (ret <= 0) {
     ret = 1;
@@ -52,7 +50,6 @@ function restartDownload() {
   });
 }
 
-clearCache();
 // load last state
 chrome.storage.sync.get(['paused'], function(result) {
   pausedItem = result.paused;
@@ -60,7 +57,7 @@ chrome.storage.sync.get(['paused'], function(result) {
 });
 
 chrome.storage.sync.get(['sec'], function(result) {
-  intTime = timeBounder(result.sec);
+  intTime = timeBoundary(result.sec);
   console.log(intTime);
 });
 
@@ -81,7 +78,7 @@ chrome.extension.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(msg) {
     console.log(msg);
 
-    intTime = timeBounder(msg.sec);
+    intTime = timeBoundary(msg.sec);
     pausedItem = msg.paused;
 
     chrome.storage.sync.set({
