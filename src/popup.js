@@ -64,7 +64,7 @@ window.onload = function() {
   chrome.storage.sync.get(['turnOn'], function(result) {
     if (result.turnOn) {
       startSwitch.checked = true;
-      sendMsg(startSwitch, pausedSett, intervalSett);
+      //sendMsg(startSwitch, pausedSett, intervalSett);
     } else {
       startSwitch.checked = false;
     }

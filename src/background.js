@@ -35,7 +35,6 @@ function stopAllInterval(arr) {
 
 function restartDownload() {
   //console.log("running");
-
   chrome.downloads.search({
     // get download list
     orderBy: ['-startTime'],
