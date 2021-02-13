@@ -4,7 +4,7 @@ var pausedItem = false;
 
 function sendLog(str) {
   var port = chrome.extension.connect({
-    name: "connect popup"
+    name: "call connect from background"
   });
 
   str += "\n";
@@ -46,7 +46,16 @@ function restartDownload() {
       if (item.canResume) {
         if (!item.paused || pausedItem) {
           //console.log(results);
-          sendLog(("resume : " + item.filename));
+          //sendLog(("resume : " + item.filename));
+          chrome.storage.sync.get(['logText'], function(result) {
+            if (typeof result.logText == "undefined") {
+              result.logText = "";
+            }
+            var newLog = "\n" + result.logText + ("resume : " + item.filename) + "\n\n";
+            chrome.storage.sync.set({
+              logText: newLog
+            });
+          });
           chrome.downloads.resume(item.id, function(){});
         }
       }

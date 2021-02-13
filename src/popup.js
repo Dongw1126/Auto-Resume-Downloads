@@ -9,7 +9,7 @@ logText : (string) log text in textarea (id = downloadLog)
 
 function sendMsg(_startSwitch, _pausedSett, _intervalSett) {
   var port = chrome.extension.connect({
-    name: "connect background"
+    name: "call connect from popup"
   });
   port.postMessage({
     turnOn: _startSwitch.checked,

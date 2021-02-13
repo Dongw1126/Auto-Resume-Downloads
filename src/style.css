@@ -121,7 +121,7 @@ input:checked + .slider:before {
   margin-bottom: 15px;
 }
 
-.checks input[type="checkbox"] {  /* 실제 체크박스는 화면에서 숨김 */
+.checks input[type="checkbox"] {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -139,12 +139,12 @@ input:checked + .slider:before {
   -moz-user-select: none;
   -ms-user-select: none;
 }
-.checks input[type="checkbox"] + label:before {  /* 가짜 체크박스 */
+.checks input[type="checkbox"] + label:before {
   content: ' ';
   display: inline-block;
-  width: 21px;  /* 체크박스의 너비를 지정 */
-  height: 21px;  /* 체크박스의 높이를 지정 */
-  line-height: 21px; /* 세로정렬을 위해 높이값과 일치 */
+  width: 21px;
+  height: 21px;
+  line-height: 21px;
   margin: -2px 8px 0 0;
   text-align: center;
   vertical-align: middle;
@@ -159,8 +159,8 @@ input:checked + .slider:before {
   box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
 }
 
-.checks input[type="checkbox"]:checked + label:before {  /* 체크박스를 체크했을때 */
-  content: '\2714';  /* 체크표시 유니코드 사용 */
+.checks input[type="checkbox"]:checked + label:before {
+  content: '\2714';
   color: #99a1a7;
   text-shadow: 1px 1px #fff;
   background: #e9ecee;
