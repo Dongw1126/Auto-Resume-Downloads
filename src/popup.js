@@ -8,7 +8,7 @@ logText : (string) log text in textarea (id = downloadLog)
 */
 
 function sendMsg(_startSwitch, _pausedSett, _intervalSett) {
-  var port = chrome.runtime.connect({
+  var port = chrome.extension.connect({
     name: "connect background"
   });
   port.postMessage({
@@ -80,7 +80,7 @@ window.onload = function() {
 }
 
 // connection with background.js
-chrome.runtime.onConnect.addListener(function(port) {
+chrome.extension.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(msg) {
     // listen log in background
     let today = new Date();

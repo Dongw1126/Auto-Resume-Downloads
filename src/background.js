@@ -3,7 +3,7 @@ var intTime = 10;
 var pausedItem = false;
 
 function sendLog(str) {
-  var port = chrome.runtime.connect({
+  var port = chrome.extension.connect({
     name: "connect popup"
   });
 
@@ -42,7 +42,7 @@ function restartDownload() {
   }, function(results) {
     //console.log(results);
     // check items in the list and resume
-    results.forEach((item) => {
+    results.forEach(function(item) {
       if (item.canResume) {
         if (!item.paused || pausedItem) {
           //console.log(results);
@@ -78,7 +78,7 @@ chrome.storage.sync.get(['turnOn'], function(result) {
 
 // main logic
 // connection with popup.js
-chrome.runtime.onConnect.addListener(function(port) {
+chrome.extension.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(msg) {
     //console.log(msg);
     // load values in msg
