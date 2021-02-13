@@ -7,3 +7,4 @@ Auto Download Resume Chrome extension
 ## Features
 * Automatically resume downloading when switched on  
 * Time interval to trigger resumption can be manually set (default 10)  
+* Checking the log while the program is running  
