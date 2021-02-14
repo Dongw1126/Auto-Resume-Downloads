@@ -1,5 +1,5 @@
 var arr = []
-var intTime = 10;
+var intTime = 3;
 var pausedItem = false;
 
 function sendLog(str) {
@@ -51,7 +51,7 @@ function restartDownload() {
             if (typeof result.logText == "undefined") {
               result.logText = "";
             }
-            var newLog = "\n" + result.logText + ("resume : " + item.filename) + "\n\n";
+            var newLog = result.logText + ("resume : " + item.filename) + "\n\n";
             chrome.storage.sync.set({
               logText: newLog
             });
