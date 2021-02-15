@@ -10,6 +10,12 @@ Auto Download Resume Chrome extension
 * Time interval to trigger resumption can be manually set 
 * Checking the log while the program is running  
 
-## Installation
-
+## Installation Instructions
+#### Download in Chrome Web Store
+1. Still in preparation
+#### Download from GitHub
+1. Download a [ZIP file](https://github.com/Dongw1126/Auto-Resume-Download/archive/main.zip) from GitHub and uncompress to local.
+2. In Chrome, go to the extensions page (<code>chrome://extensions</code>).
+3. Enable Developer Mode.
+4. Choose <code>Load unpacked</code> and click <code>src</code> folder
 ## Usage
