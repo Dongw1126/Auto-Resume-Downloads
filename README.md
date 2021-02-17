@@ -1,7 +1,7 @@
 # Auto Resume Download
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)    
 <br> 
-<img src="https://user-images.githubusercontent.com/48395704/107902587-3d53bc80-6f8a-11eb-8725-83c26f5990a1.png" width="40%" height="40%">     
+<img src="https://user-images.githubusercontent.com/48395704/108143136-7b77ea00-710a-11eb-9ce5-c7867c08a3f6.png" width="40%" height="40%">     
   
 Auto Download Resume Chrome extension
 
@@ -12,7 +12,8 @@ Auto Download Resume Chrome extension
 
 ## Installation Instructions
 #### Download in Chrome Web Store
-1. Still in preparation
+1. Download Auto Resume Downloads from [chrome web store](https://chrome.google.com/webstore/detail/auto-resume-downloads/pifbhionjpacnpjoaomhdpbekkdphdgd).
+2. Available immediately after installation.
 #### Download from GitHub
 1. Download a [ZIP file](https://github.com/Dongw1126/Auto-Resume-Download/archive/main.zip) from GitHub and uncompress to local.
 2. In Chrome, go to the extensions page (<code>chrome://extensions</code>).
