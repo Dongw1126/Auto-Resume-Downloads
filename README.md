@@ -1,7 +1,7 @@
 # Auto Resume Download
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)    
 <br> 
-<img src="https://user-images.githubusercontent.com/48395704/108143136-7b77ea00-710a-11eb-9ce5-c7867c08a3f6.png" width="40%" height="40%">     
+<img src="https://user-images.githubusercontent.com/48395704/108146248-2a6af480-7110-11eb-8c14-a04658488ce5.png" width="40%" height="40%">     
   
 Auto Download Resume Chrome extension
 
