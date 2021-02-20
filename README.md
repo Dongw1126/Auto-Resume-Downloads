@@ -1,4 +1,4 @@
-# Auto Resume Download
+# Auto Resume Downloads
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)    
 <br> 
 <img src="https://user-images.githubusercontent.com/48395704/108146248-2a6af480-7110-11eb-8c14-a04658488ce5.png" width="42%" height="42%">     
