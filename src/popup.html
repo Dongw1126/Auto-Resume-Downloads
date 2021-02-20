@@ -10,12 +10,12 @@
 <body>
   <div class="content">
     <h2 id="title">Auto resume</h2> &nbsp;
-    <a href="https://github.com/Dongw1126/Auto_Resume_Download" id="githubLink" target="_blank">
-      <img src="GitHub-Mark.png" alt="GitHub">
+    <a href="https://github.com/Dongw1126/Auto_Resume_Download" id="github-link" target="_blank">
+      <img src="github.png" alt="GitHub">
     </a>
     <br><br>
     <label class="switch">
-      <input type="checkbox" id="start">
+      <input type="checkbox" id="start-switch">
       <span class="slider round"></span>
     </label><br><br>
     <hr>
@@ -24,13 +24,13 @@
       <summary>Settings</summary>
       <br>
       <div class="checks etrans">
-        <input type="checkbox" id="pausedItem">
-        <label for="pausedItem">Apply to paused items</label>
+        <input type="checkbox" id="paused-item">
+        <label for="paused-item">Apply to paused items</label>
       </div>
       <br><br>
       <div>
-        <label for="intervalTime">Check time interval</label><br>
-        <input id="intervalTime" type="number" min="1" max="100000" size="4" step="1" value="3" placeholder="3" /> sec
+        <label for="interval-time">Check time interval</label><br>
+        <input id="interval-time" type="number" min="1" max="100000" size="4" step="1" value="3" placeholder="3" /> sec
       </div>
       <br><br>
       <button class="apply-button" id="apply-button" type="button">Apply</button>
@@ -39,7 +39,7 @@
     <details>
       <summary>Log</summary>
       <br>
-      <textarea readonly="readonly" id="downloadLog"></textarea>
+      <textarea readonly="readonly" id="log-textarea"></textarea>
       <br><br>
       <button class="clear-button" id="clear-button">Clear</button>
     </details>

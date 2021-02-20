@@ -1,97 +1,96 @@
 /*
 local storage values
 --------------------------------------
-turnOn : (bool) true => Auto resume on
-paused : (bool) true => resume paused items
+running : (bool) true => Auto resume running
+paused : (bool) true => resume paused items too
 sec : (int) check download items interval
-logText : (string) log text in textarea (id = downloadLog)
+localSavedLog : (string) log text in textarea (id = log-textarea)
 */
 
-function sendMsg(_startSwitch, _pausedSett, _intervalSett) {
+function sendStateToBackground(_startSwitch, _pausedSetting, _intervalSetting) {
   var port = chrome.extension.connect({
-    name: "call connect from popup"
+    name: "connect from popup"
   });
   port.postMessage({
-    turnOn: _startSwitch.checked,
-    paused: _pausedSett.checked,
-    sec: _intervalSett.value
+    running: _startSwitch.checked,
+    paused: _pausedSetting.checked,
+    sec: _intervalSetting.value
   });
 }
 
 window.onload = function() {
-  var startSwitch = document.getElementById("start");
+  var startSwitch = document.getElementById("start-switch");
   var applyButton = document.getElementById("apply-button");
   var clearButton = document.getElementById("clear-button");
-  var pausedSett = document.getElementById("pausedItem");
-  var intervalSett = document.getElementById("intervalTime");
-  var logTextArea = document.getElementById("downloadLog");
+  var pausedSetting = document.getElementById("paused-item");
+  var intervalSetting = document.getElementById("interval-time");
+  var logTextArea = document.getElementById("log-textarea");
 
   startSwitch.addEventListener("click", function() {
-    sendMsg(startSwitch, pausedSett, intervalSett);
+    sendStateToBackground(startSwitch, pausedSetting, intervalSetting);
   });
 
   applyButton.addEventListener("click", function() {
-    sendMsg(startSwitch, pausedSett, intervalSett);
+    sendStateToBackground(startSwitch, pausedSetting, intervalSetting);
     logTextArea.value += "Settings applied\n";
     chrome.storage.sync.set({
-      logText: logTextArea.value
+      localSavedLog: logTextArea.value
     });
   });
 
   clearButton.addEventListener("click", function() {
     logTextArea.value = "";
     chrome.storage.sync.set({
-      logText: logTextArea.value
+      localSavedLog: logTextArea.value
     });
   });
 
   //Load values in local storage
   chrome.storage.sync.get(['paused'], function(result) {
     if (result.paused) {
-      pausedSett.checked = true;
+      pausedSetting.checked = true;
     } else {
-      pausedSett.checked = false;
+      pausedSetting.checked = false;
     }
   });
 
   chrome.storage.sync.get(['sec'], function(result) {
     if (typeof result.sec == "undefined") {
-      result.sec = 10;
+      result.sec = 3;
     }
-    intervalSett.value = result.sec;
+    intervalSetting.value = result.sec;
   });
 
-  chrome.storage.sync.get(['turnOn'], function(result) {
-    if (result.turnOn) {
+  chrome.storage.sync.get(['running'], function(result) {
+    if (result.running) {
       startSwitch.checked = true;
-      //sendMsg(startSwitch, pausedSett, intervalSett);
     } else {
       startSwitch.checked = false;
     }
   });
 
-  chrome.storage.sync.get(['logText'], function(result) {
-    if (typeof result.logText == "undefined") {
-      result.logText = "";
+  chrome.storage.sync.get(['localSavedLog'], function(result) {
+    if (typeof result.localSavedLog == "undefined") {
+      result.localSavedLog = "";
     }
-    logTextArea.value = result.logText;
+    logTextArea.value = result.localSavedLog;
     logTextArea.scrollTop = logTextArea.scrollHeight;
   });
 }
 
 // connection with background.js
 chrome.extension.onConnect.addListener(function(port) {
-  port.onMessage.addListener(function(msg) {
+  port.onMessage.addListener(function(message) {
     // listen log in background
     let today = new Date();
-    var logTextArea = document.getElementById("downloadLog");
-    var logStr = today.toLocaleString() + "\n" + msg.logAtBackground + "\n";
+    var logTextArea = document.getElementById("log-textarea");
+    var newLogText = today.toLocaleString() + "\n" + message.logAtBackground + "\n";
 
-    logTextArea.value += logStr;
+    logTextArea.value += newLogText;
     logTextArea.scrollTop = logTextArea.scrollHeight;
 
     chrome.storage.sync.set({
-      logText: logTextArea.value
+      localSavedLog: logTextArea.value
     });
   })
 });

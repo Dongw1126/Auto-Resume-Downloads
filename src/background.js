@@ -1,62 +1,67 @@
-var arr = []
-var intTime = 3;
-var pausedItem = false;
+var intervalFunctionArray = []
+var intervalForCheck = 3;
+var pausedOption = false;
 
-function sendLog(str) {
+function sendLogToPopup(message) {
   var port = chrome.extension.connect({
-    name: "call connect from background"
+    name: "connect from background"
   });
 
-  str += "\n";
+  message += "\n";
   port.postMessage({
-    logAtBackground: str
+    logAtBackground: message
   });
 }
 
 function timeBoundary(t) {
+  var max = 10000;
+  var min = 1;
+
   ret = Number(t);
   if (ret <= 0) {
-    ret = 1;
-  } else if (ret > 10000) {
-    ret = 10000;
+    ret = min;
+  } else if (ret > max) {
+    ret = max;
   }
 
   return ret;
 }
 
-function stopAllInterval(arr) {
+function stopAllIntervals(functionArray) {
   //stop all interval functions
-  arr.forEach(function(element) {
+  functionArray.forEach(function(element) {
     clearInterval(element);
   });
-  arr = []
-  return arr;
+  functionArray = []
+  return functionArray;
 }
 
-function restartDownload() {
+function resumeDownload() {
   //console.log("running");
+  // get download lists
   chrome.downloads.search({
-    // get download list
     orderBy: ['-startTime'],
     limit: 100
-  }, function(results) {
-    //console.log(results);
+  }, function(searchResults) {
+    //console.log(searchResults);
     // check items in the list and resume
-    results.forEach(function(item) {
+    searchResults.forEach(function(item) {
       if (item.canResume) {
-        if (!item.paused || pausedItem) {
-          //console.log(results);
-          //sendLog(("resume : " + item.filename));
-          chrome.storage.sync.get(['logText'], function(result) {
-            if (typeof result.logText == "undefined") {
-              result.logText = "";
+        if (!item.paused || pausedOption) {
+          //console.log(searchResults);
+          chrome.storage.sync.get(['localSavedLog'], function(result) {
+            // sinnce the connection with popup.js may be disconnected, save logs in local storage
+            // process when there is no saved log
+            if (typeof result.localSavedLog == "undefined") {
+              result.localSavedLog = "";
             }
-            var newLog = result.logText + ("resume : " + item.filename) + "\n\n";
+
+            var updatedLog = result.localSavedLog + ("resume : " + item.filename) + "\n\n";
             chrome.storage.sync.set({
-              logText: newLog
+              localSavedLog: updatedLog
             });
           });
-          chrome.downloads.resume(item.id, function(){});
+          chrome.downloads.resume(item.id, function() {});
         }
       }
     });
@@ -65,57 +70,55 @@ function restartDownload() {
 
 // load last state
 chrome.storage.sync.get(['paused'], function(result) {
-  pausedItem = result.paused;
-  //console.log(pausedItem);
+  pausedOption = result.paused;
 });
 
 chrome.storage.sync.get(['sec'], function(result) {
-  intTime = timeBoundary(result.sec);
-  //console.log(intTime);
+  intervalForCheck = timeBoundary(result.sec);
 });
 
-chrome.storage.sync.get(['turnOn'], function(result) {
-  //console.log(result.turnOn);
-  if (result.turnOn) {
+chrome.storage.sync.get(['running'], function(result) {
+  //console.log(result.running);
+  if (result.running) {
     // if last state is on, start Auto resume
-    arr = stopAllInterval(arr);
+    intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
 
-    runFunc = setInterval(restartDownload, intTime * 1000);
-    arr.push(runFunc);
+    newInterval = setInterval(resumeDownload, intervalForCheck * 1000);
+    intervalFunctionArray.push(newInterval);
   }
 });
 
 // main logic
 // connection with popup.js
 chrome.extension.onConnect.addListener(function(port) {
-  port.onMessage.addListener(function(msg) {
-    //console.log(msg);
-    // load values in msg
-    intTime = timeBoundary(msg.sec);
-    pausedItem = msg.paused;
+  port.onMessage.addListener(function(message) {
+    //console.log(message);
+    // load values in message
+    intervalForCheck = timeBoundary(message.sec);
+    pausedOption = message.paused;
 
     chrome.storage.sync.set({
-      paused: pausedItem,
-      sec: intTime
+      paused: pausedOption,
+      sec: intervalForCheck
     });
 
-    if (msg.turnOn == true) {
+    if (message.running == true) {
       // auto resume start
-      arr = stopAllInterval(arr);
-      sendLog("auto resume running");
+      intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
+      sendLogToPopup("auto resume running");
       chrome.storage.sync.set({
-        turnOn: true
+        running: true
       });
-      runFunc = setInterval(restartDownload, intTime * 1000);
-      arr.push(runFunc);
+      newInterval = setInterval(resumeDownload, intervalForCheck * 1000);
+      intervalFunctionArray.push(newInterval);
     } else {
       // auto resume stop
-      sendLog("auto resume stopped");
+      sendLogToPopup("auto resume stopped");
       chrome.storage.sync.set({
-        turnOn: false
+        running: false
       });
 
-      arr = stopAllInterval(arr);
+      intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
     }
   });
 });
