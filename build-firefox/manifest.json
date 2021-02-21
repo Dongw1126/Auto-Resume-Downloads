@@ -4,10 +4,8 @@
   "description": "Firefox extension that automatically resumes downloads.",
 
   "icons": {
-    "16": "icon16.png",
     "48": "icon48.png",
-    "96" : "icon128.png",
-    "128": "icon128.png"
+    "96" : "icon96.png"
   },
 
   "browser_action": {
@@ -24,9 +22,10 @@
   },
 
 
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
-      "id": "topblade71@naver.com"
+      "id": "addon@example.com",
+      "strict_min_version": "42.0"
     }
   },
 

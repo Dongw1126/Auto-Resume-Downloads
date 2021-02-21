@@ -61,6 +61,7 @@ function resumeDownload() {
               localSavedLog: updatedLog
             });
           });
+
           browser.downloads.resume(item.id, function() {});
         }
       }
