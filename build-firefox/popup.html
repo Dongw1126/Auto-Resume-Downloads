@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
+  <title></title>
+</head>
+
+<body>
+  <div class="content">
+    <h2 id="title">Auto resume</h2> &nbsp;
+    <a href="https://github.com/Dongw1126/Auto_Resume_Download" id="github-link" target="_blank">
+      <img src="github.png" alt="GitHub">
+    </a>
+    <br><br>
+    <label class="switch">
+      <input type="checkbox" id="start-switch">
+      <span class="slider round"></span>
+    </label><br><br>
+    <hr>
+
+    <details open>
+      <summary>Settings</summary>
+      <br>
+      <div class="checks etrans">
+        <input type="checkbox" id="paused-item">
+        <label for="paused-item">Apply to paused items</label>
+      </div>
+      <br><br>
+      <div>
+        <label for="interval-time">Check time interval</label><br>
+        <input id="interval-time" type="number" min="1" max="100000" size="4" step="1" value="3" placeholder="3" /> sec
+      </div>
+      <br><br>
+      <button class="apply-button" id="apply-button" type="button">Apply</button>
+    </details>
+
+    <details>
+      <summary>Log</summary>
+      <br>
+      <textarea readonly="readonly" id="log-textarea"></textarea>
+      <br><br>
+      <button class="clear-button" id="clear-button">Clear</button>
+    </details>
+
+    <script type="text/javascript" src="popup.js"></script>
+  </div>
+</body>
+
+</html>

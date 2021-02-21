@@ -1,0 +1,213 @@
+@font-face {
+    src : url("font.ttf");
+    font-family: "sq"
+}
+
+body {
+  font-family: 'sq';
+  padding: 10px;
+  background-color: #f8f8f8
+}
+
+#title {
+  display: inline;
+}
+
+#github-link img{
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+#log-textarea {
+  width: 95%;
+  height: 150px;
+}
+
+.content {
+  display: inline-block;
+  padding: 10px;
+  width: 250px;
+  height: auto;
+  background-color: white;
+  box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.apply-button {
+  display: block;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: #414856;
+  padding: 10px;
+  border-radius: 30px;
+  color: white;
+  background-size: 100% 100%;
+  box-shadow: 0 0 0 7px #414856 inset;
+  margin-bottom: 15px;
+}
+
+.clear-button {
+  display: block;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 30px;
+  color: black;
+  background-size: 100% 100%;
+  box-shadow: 0 0 0 7px #f5f5f5 inset;
+  margin-bottom: 15px;
+}
+
+.checks input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0
+}
+.checks input[type="checkbox"] + label {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.checks input[type="checkbox"] + label:before {
+  content: ' ';
+  display: inline-block;
+  width: 21px;
+  height: 21px;
+  line-height: 21px;
+  margin: -2px 8px 0 0;
+  text-align: center;
+  vertical-align: middle;
+  background: #fafafa;
+  border: 1px solid #cacece;
+  border-radius : 3px;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+}
+
+.checks input[type="checkbox"] + label:active:before,
+.checks input[type="checkbox"]:checked + label:active:before {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.checks input[type="checkbox"]:checked + label:before {
+  content: '\2714';
+  color: #99a1a7;
+  text-shadow: 1px 1px #fff;
+  background: #e9ecee;
+  border-color: #adb8c0;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+}
+
+.checks.etrans input[type="checkbox"] + label {
+  padding-left: 30px;
+}
+.checks.etrans input[type="checkbox"] + label:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-top: 0;
+  opacity: .6;
+  box-shadow: none;
+  border-color: #6cc0e5;
+  -webkit-transition: all .12s, border-color .08s;
+  transition: all .12s, border-color .08s;
+}
+
+.checks.etrans input[type="checkbox"]:checked + label:before {
+  position: absolute;
+  content: "";
+  width: 10px;
+  top: -5px;
+  left: 5px;
+  border-radius: 0;
+  opacity:1;
+  background: transparent;
+  border-color:transparent black black transparent;
+  border-top-color:transparent;
+  border-left-color:transparent;
+  -ms-transform:rotate(45deg);
+  -webkit-transform:rotate(45deg);
+  transform:rotate(45deg);
+}
+
+.no-csstransforms .checks.etrans input[type="checkbox"]:checked + label:before {
+  /*content:"\2713";*/
+  content: "\2714";
+  top: 0;
+  left: 0;
+  width: 21px;
+  line-height: 21px;
+  color: #6cc0e5;
+  text-align: center;
+  border: 1px solid #6cc0e5;
+}

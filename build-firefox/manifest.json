@@ -1,0 +1,34 @@
+{
+  "name": "Auto Resume Downloads",
+  "version": "1.0.2",
+  "description": "Firefox extension that automatically resumes downloads.",
+
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "96" : "icon128.png",
+    "128": "icon128.png"
+  },
+
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+
+  "permissions": [
+    "storage",
+    "downloads"
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+
+  "applications": {
+    "gecko": {
+      "id": "topblade71@naver.com"
+    }
+  },
+
+  "manifest_version": 2
+}
