@@ -37,18 +37,15 @@ function stopAllIntervals(functionArray) {
 }
 
 function resumeDownload() {
-  //console.log("running");
   // get download lists
   chrome.downloads.search({
     orderBy: ['-startTime'],
     limit: 100
   }, function(searchResults) {
-    //console.log(searchResults);
     // check items in the list and resume
     searchResults.forEach(function(item) {
       if (item.canResume) {
         if (!item.paused || pausedOption) {
-          //console.log(searchResults);
           chrome.storage.sync.get(['localSavedLog'], function(result) {
             // sinnce the connection with popup.js may be disconnected, save logs in local storage
             // process when there is no saved log
@@ -78,7 +75,6 @@ chrome.storage.sync.get(['sec'], function(result) {
 });
 
 chrome.storage.sync.get(['running'], function(result) {
-  //console.log(result.running);
   if (result.running) {
     // if last state is on, start Auto resume
     intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
@@ -92,7 +88,6 @@ chrome.storage.sync.get(['running'], function(result) {
 // connection with popup.js
 chrome.extension.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(message) {
-    //console.log(message);
     // load values in message
     intervalForCheck = timeBoundary(message.sec);
     pausedOption = message.paused;

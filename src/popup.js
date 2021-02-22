@@ -4,7 +4,7 @@ local storage values
 running : (bool) true => Auto resume running
 paused : (bool) true => resume paused items too
 sec : (int) check download items interval
-localSavedLog : (string) log text in textarea (id = log-textarea)
+localSavedLog : (string) log text in textarea (css id = log-textarea)
 */
 
 function sendStateToBackground(_startSwitch, _pausedSetting, _intervalSetting) {
