@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Auto Resume Downloads",
+    "description": "Auto Resume Downloads"
+  },
+  "appDesc": {
+    "message": "Chrome extension that automatically resumes downloads.",
+    "description": "Chrome extension that automatically resumes downloads."
+  }
+}
