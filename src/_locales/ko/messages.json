@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Auto Resume Downloads",
+    "description": "Auto Resume Downloads"
+  },
+  "appDesc": {
+    "message": "실패한 다운로드를 자동으로 다시 시작하는 크롬 확장프로그램 입니다.",
+    "description":"실패한 다운로드를 자동으로 다시 시작하는 크롬 확장프로그램 입니다."
+  }
+}
