@@ -52,13 +52,12 @@ function resumeDownload() {
             if (typeof result.localSavedLog == "undefined") {
               result.localSavedLog = "";
             }
-
             var updatedLog = result.localSavedLog + ("resume : " + item.filename) + "\n\n";
             chrome.storage.sync.set({
               localSavedLog: updatedLog
             });
           });
-          chrome.downloads.resume(item.id, function() {});
+          chrome.downloads.resume(item.id);
         }
       }
     });
