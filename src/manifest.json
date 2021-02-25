@@ -1,6 +1,6 @@
 {
   "name": "Auto Resume Downloads",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Chrome extension that automatically resumes downloads.",
 
   "icons": { "16": "icon16.png",
