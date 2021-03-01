@@ -1,10 +1,10 @@
 /*
 local storage values
 --------------------------------------
-running : (bool) true => Auto resume running
-paused : (bool) true => resume paused items too
-sec : (int) check download items interval
-localSavedLog : (string) log text in textarea (css id = log-textarea)
+running : (bool) if true => Auto resume running
+paused : (bool) if true => resume paused items too
+sec : (int) time interval for checking download items
+localSavedLog : (string) log texts displayed in textarea
 */
 
 function sendStateToBackground(_startSwitch, _pausedSetting, _intervalSetting) {
@@ -18,6 +18,18 @@ function sendStateToBackground(_startSwitch, _pausedSetting, _intervalSetting) {
   });
 }
 
+function logging(str, _logTextArea) {
+  let today = new Date();
+  var newLogText = today.toLocaleString() + "\n" + str + "\n\n";
+
+  _logTextArea.value += newLogText;
+  _logTextArea.scrollTop = _logTextArea.scrollHeight;
+
+  chrome.storage.sync.set({
+    localSavedLog: _logTextArea.value
+  });
+}
+
 window.onload = function() {
   var startSwitch = document.getElementById("start-switch");
   var applyButton = document.getElementById("apply-button");
@@ -28,14 +40,17 @@ window.onload = function() {
 
   startSwitch.addEventListener("click", function() {
     sendStateToBackground(startSwitch, pausedSetting, intervalSetting);
+    if(startSwitch.checked) {
+      logging("auto resume running", logTextArea);
+    }
+    else {
+      logging("auto resume stopped", logTextArea);
+    }
   });
 
   applyButton.addEventListener("click", function() {
     sendStateToBackground(startSwitch, pausedSetting, intervalSetting);
-    logTextArea.value += "Settings applied\n";
-    chrome.storage.sync.set({
-      localSavedLog: logTextArea.value
-    });
+    logging("Settings applied", logTextArea);
   });
 
   clearButton.addEventListener("click", function() {
@@ -77,20 +92,3 @@ window.onload = function() {
     logTextArea.scrollTop = logTextArea.scrollHeight;
   });
 }
-
-// connection with background.js
-chrome.extension.onConnect.addListener(function(port) {
-  port.onMessage.addListener(function(message) {
-    // listen log in background
-    let today = new Date();
-    var logTextArea = document.getElementById("log-textarea");
-    var newLogText = today.toLocaleString() + "\n" + message.logAtBackground + "\n";
-
-    logTextArea.value += newLogText;
-    logTextArea.scrollTop = logTextArea.scrollHeight;
-
-    chrome.storage.sync.set({
-      localSavedLog: logTextArea.value
-    });
-  })
-});

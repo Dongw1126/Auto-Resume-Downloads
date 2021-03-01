@@ -3,17 +3,6 @@ var intervalForCheck = 3;
 var pausedOption = false;
 var resumeSuccess = false;
 
-function sendLogToPopup(message) {
-  var port = chrome.extension.connect({
-    name: "connect from background"
-  });
-
-  message += "\n";
-  port.postMessage({
-    logAtBackground: message
-  });
-}
-
 function timeBoundary(t) {
   var max = 10000;
   var min = 1;
@@ -28,7 +17,7 @@ function timeBoundary(t) {
   return ret;
 }
 
-//stop all interval
+//stop all intervals
 function stopAllIntervals(functionArray) {
   functionArray.forEach(function(element) {
     clearInterval(element);
@@ -64,14 +53,18 @@ function downloadManager() {
   chrome.downloads.search({}, resumeDownload);
 }
 
-function autoResume(on) {
-  if (on) {
+function autoResume(toggle) {
+  if (toggle) {
     intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
     newInterval = setInterval(downloadManager, intervalForCheck * 1000);
     intervalFunctionArray.push(newInterval);
   } else {
     intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
   }
+
+  chrome.storage.sync.set({
+    running: toggle
+  });
 }
 
 function autoResumeRefresher() {
@@ -85,7 +78,7 @@ function autoResumeRefresher() {
 
 setInterval(autoResumeRefresher, 3000);
 
-// load last state
+// load options
 chrome.storage.sync.get(['paused'], function(result) {
   pausedOption = result.paused;
 });
@@ -94,18 +87,17 @@ chrome.storage.sync.get(['sec'], function(result) {
   intervalForCheck = timeBoundary(result.sec);
 });
 
+// if last state is on, start Auto resume
 chrome.storage.sync.get(['running'], function(result) {
   if (result.running) {
-    // if last state is on, start Auto resume
     autoResume(true);
   }
 });
 
-// main logic
 // connection with popup.js
 chrome.extension.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(message) {
-    // load values in message
+    // get options from popup
     intervalForCheck = timeBoundary(message.sec);
     pausedOption = message.paused;
 
@@ -116,17 +108,9 @@ chrome.extension.onConnect.addListener(function(port) {
 
     if (message.running == true) {
       // auto resume start
-      sendLogToPopup("auto resume running");
-      chrome.storage.sync.set({
-        running: true
-      });
       autoResume(true);
     } else {
       // auto resume stop
-      sendLogToPopup("auto resume stopped");
-      chrome.storage.sync.set({
-        running: false
-      });
       autoResume(false);
     }
   });
