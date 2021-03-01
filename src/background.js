@@ -17,7 +17,7 @@ function timeBoundary(t) {
   return ret;
 }
 
-//stop all interval
+//stop all intervals
 function stopAllIntervals(functionArray) {
   functionArray.forEach(function(element) {
     clearInterval(element);
@@ -97,7 +97,7 @@ chrome.storage.sync.get(['running'], function(result) {
 // connection with popup.js
 chrome.extension.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(message) {
-    // load values in message
+    // get options from popup
     intervalForCheck = timeBoundary(message.sec);
     pausedOption = message.paused;
 
