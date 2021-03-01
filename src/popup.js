@@ -41,16 +41,16 @@ window.onload = function() {
   startSwitch.addEventListener("click", function() {
     sendStateToBackground(startSwitch, pausedSetting, intervalSetting);
     if(startSwitch.checked) {
-      logging("auto resume running");
+      logging("auto resume running", logTextArea);
     }
     else {
-      logging("auto resume stopped");
+      logging("auto resume stopped", logTextArea);
     }
   });
 
   applyButton.addEventListener("click", function() {
     sendStateToBackground(startSwitch, pausedSetting, intervalSetting);
-    logging("Settings applied");
+    logging("Settings applied", logTextArea);
   });
 
   clearButton.addEventListener("click", function() {
