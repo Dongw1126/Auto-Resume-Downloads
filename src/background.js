@@ -1,4 +1,5 @@
 var intervalFunctionArray = []
+// default value : 3
 var intervalForCheck = 3;
 var pausedOption = false;
 var resumeSuccess = false;
@@ -31,8 +32,7 @@ function resumeDownload(DownloadItems) {
     if (item.canResume) {
       if (!item.paused || pausedOption) {
         chrome.storage.sync.get(['localSavedLog'], function(result) {
-          // sinnce the connection with popup.js may be disconnected, save logs in local storage
-          // process when there is no saved log
+          // since the connection with popup.js may be disconnected, save logs in local storage
           if (typeof result.localSavedLog == "undefined") {
             result.localSavedLog = "";
           }
@@ -41,7 +41,6 @@ function resumeDownload(DownloadItems) {
             localSavedLog: updatedLog
           });
         });
-        console.log(item);
         chrome.downloads.resume(item.id);
         resumeSuccess = true;
       }
@@ -69,7 +68,6 @@ function autoResume(toggle) {
 
 function autoResumeRefresher() {
   if (resumeSuccess) {
-    console.log("refresh");
     autoResume(false);
     autoResume(true);
     resumeSuccess = false;

@@ -71,6 +71,7 @@ window.onload = function() {
 
   chrome.storage.sync.get(['sec'], function(result) {
     if (typeof result.sec == "undefined") {
+      // default value : 3
       result.sec = 3;
     }
     intervalSetting.value = result.sec;
