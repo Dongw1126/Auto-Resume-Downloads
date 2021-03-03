@@ -27,21 +27,43 @@ function stopAllIntervals(functionArray) {
   return functionArray;
 }
 
+// str must be a 3-line string with three "\n"
+function getMaximunLengthString(str) {
+  maxByte = 7000;
+  byteLength = (function(s, b, i, c) {
+    for (b = i = 0; c = s.charCodeAt(i++); b += c >> 11 ? 3 : c >> 7 ? 2 : 1);
+    return b;
+  })(str);
+
+  if (byteLength > maxByte) {
+    str = str.substring(str.indexOf('\n') + 1);
+    str = str.substring(str.indexOf('\n') + 1);
+    str = str.substring(str.indexOf('\n') + 1);
+  }
+
+  return str;
+}
+
+function logging(str) {
+  chrome.storage.sync.get(['localSavedLog'], function(result) {
+    // since the connection with popup.js may be disconnected, save logs in local storage
+    if (typeof result.localSavedLog == "undefined") {
+      result.localSavedLog = "";
+    }
+    var updatedLog = result.localSavedLog + str + "\n\n";
+    updatedLog = getMaximunLengthString(updatedLog);
+    chrome.storage.sync.set({
+      localSavedLog: updatedLog
+    });
+  });
+}
+
 function resumeDownload(DownloadItems) {
   DownloadItems.forEach(function(item) {
     if (item.canResume) {
       if (!item.paused || pausedOption) {
-        chrome.storage.sync.get(['localSavedLog'], function(result) {
-          // since the connection with popup.js may be disconnected, save logs in local storage
-          if (typeof result.localSavedLog == "undefined") {
-            result.localSavedLog = "";
-          }
-          var updatedLog = result.localSavedLog + ("resume : " + item.filename) + "\n\n";
-          chrome.storage.sync.set({
-            localSavedLog: updatedLog
-          });
-        });
         chrome.downloads.resume(item.id);
+        logging(("resume :\n" + item.filename));
         resumeSuccess = true;
       }
     }

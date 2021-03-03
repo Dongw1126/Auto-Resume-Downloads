@@ -18,11 +18,29 @@ function sendStateToBackground(_startSwitch, _pausedSetting, _intervalSetting) {
   });
 }
 
+// str must be a 3-line string with three "\n"
+function getMaximunLengthString(str) {
+  maxByte = 7000;
+  byteLength = (function(s, b, i, c) {
+    for (b = i = 0; c = s.charCodeAt(i++); b += c >> 11 ? 3 : c >> 7 ? 2 : 1);
+    return b;
+  })(str);
+
+  if (byteLength > maxByte) {
+    str = str.substring(str.indexOf('\n') + 1);
+    str = str.substring(str.indexOf('\n') + 1);
+    str = str.substring(str.indexOf('\n') + 1);
+  }
+
+  return str;
+}
+
 function logging(str, _logTextArea) {
   let today = new Date();
   var newLogText = today.toLocaleString() + "\n" + str + "\n\n";
 
   _logTextArea.value += newLogText;
+  _logTextArea.value = getMaximunLengthString(_logTextArea.value);
   _logTextArea.scrollTop = _logTextArea.scrollHeight;
 
   chrome.storage.sync.set({
@@ -40,10 +58,9 @@ window.onload = function() {
 
   startSwitch.addEventListener("click", function() {
     sendStateToBackground(startSwitch, pausedSetting, intervalSetting);
-    if(startSwitch.checked) {
+    if (startSwitch.checked) {
       logging("auto resume running", logTextArea);
-    }
-    else {
+    } else {
       logging("auto resume stopped", logTextArea);
     }
   });
