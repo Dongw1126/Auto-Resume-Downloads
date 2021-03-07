@@ -59,7 +59,7 @@ cd Auto-Resume-Downloads
 ~~~
 2. Create a new topic branch (off the main project development branch) to contain your feature, change, or fix
 ~~~
-git checkout -b <new-topic-branch>
+git checkout -b <topic-branch-name>
 git pull
 ~~~
 3. Developing a new feature
