@@ -34,14 +34,14 @@ Auto Download Resume Chrome extension
 
 ## Contribution
 ### Reporting bugs
-Bugs are tracked as GitHub issues.  
+Bugs are tracked as [GitHub issues](https://github.com/Dongw1126/Auto-Resume-Downloads/issues).  
 Create an issue on this repository and if possible, please provide the following information.  
 * Use a clear and descriptive title
 * Describe the exact steps which reproduce the problem
 * Include screenshots and animated GIFs  
   
 ### Suggesting Enhancements
-Enhancement suggestions are tracked as GitHub issues.  
+Enhancement suggestions are tracked as [GitHub issues](https://github.com/Dongw1126/Auto-Resume-Downloads/issues).  
 Create an issue on this repository and if possible, please provide the following information.  
 * Describe the current behavior and explain which behavior you expected to see instead and why
 * Include screenshots and animated GIFs
