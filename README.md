@@ -46,4 +46,14 @@ Create an issue on this repository and if possible, please provide the following
 * Describe the current behavior and explain which behavior you expected to see instead and why
 * Include screenshots and animated GIFs
 * Explain why this enhancement would be useful  
+
+### Open Pull Requests 
+A [Pull Requests](https://github.com/Dongw1126/Auto-Resume-Downloads/pulls) (PR) is the step where you submit patches to this repository.   
+(e.g. adding features, renaming a variable for clarity, translating into a new language)  
   
+If you're not familiar with pull requests, you can follow these steps.
+* Fork this project and clone your fork
+* Create a new topic branch (off the main project development branch) to contain your feature, change, or fix
+* Developing a new feature
+* Push the feature to your fork
+* Open a Pull Request with a description
