@@ -39,12 +39,19 @@ function logging(str, _logTextArea) {
   let today = new Date();
   var newLogText = today.toLocaleString() + "\n" + str + "\n\n";
 
-  _logTextArea.value += newLogText;
-  _logTextArea.value = getMaximunLengthString(_logTextArea.value);
-  _logTextArea.scrollTop = _logTextArea.scrollHeight;
+  chrome.storage.sync.get(['localSavedLog'], function(result) {
+    if (typeof result.localSavedLog == "undefined") {
+      result.localSavedLog = "";
+    }
 
-  chrome.storage.sync.set({
-    localSavedLog: _logTextArea.value
+    result.localSavedLog += newLogText;
+    _logTextArea.value = getMaximunLengthString(result.localSavedLog);
+    _logTextArea.scrollTop = _logTextArea.scrollHeight;
+
+    chrome.storage.sync.set({
+      localSavedLog: _logTextArea.value
+    });
+
   });
 }
 
