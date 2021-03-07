@@ -52,16 +52,19 @@ A [Pull Requests](https://github.com/Dongw1126/Auto-Resume-Downloads/pulls) (PR)
 (e.g. adding features, renaming a variable for clarity, translating into a new language)  
   
 If you're not familiar with pull requests, you can follow these steps.  
-* Fork this project and clone your fork    
+1. Fork this project and clone your fork    
 ~~~
 git clone https://github.com/<user-name>/Auto-Resume-Downloads.git
 cd Auto-Resume-Downloads
 ~~~
-* Create a new topic branch (off the main project development branch) to contain your feature, change, or fix
+2. Create a new topic branch (off the main project development branch) to contain your feature, change, or fix
 ~~~
 git checkout -b <new-topic-branch>
 git pull
 ~~~
-* Developing a new feature
-* Push the feature to your fork
-* Open a Pull Request with a description
+3. Developing a new feature
+4. Push the feature to your fork
+~~~
+git push origin <topic-branch-name>
+~~~
+5. Open a [Pull Requests](https://github.com/Dongw1126/Auto-Resume-Downloads/pulls) with a description
