@@ -45,14 +45,14 @@ function getMaximunLengthString(str) {
 }
 
 function logging(str) {
-  chrome.storage.sync.get(['localSavedLog'], function(result) {
+  chrome.storage.local.get(['localSavedLog'], function(result) {
     // since the connection with popup.js may be disconnected, save logs in local storage
     if (typeof result.localSavedLog == "undefined") {
       result.localSavedLog = "";
     }
     var updatedLog = result.localSavedLog + str + "\n\n";
     updatedLog = getMaximunLengthString(updatedLog);
-    chrome.storage.sync.set({
+    chrome.storage.local.set({
       localSavedLog: updatedLog
     });
   });
@@ -64,7 +64,6 @@ function resumeDownload(DownloadItems) {
       if (!item.paused || pausedOption) {
         chrome.downloads.resume(item.id);
         logging(("resume :\n" + item.filename));
-        resumeSuccess = true;
       }
     }
   });
@@ -83,32 +82,22 @@ function autoResume(toggle) {
     intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
   }
 
-  chrome.storage.sync.set({
+  chrome.storage.local.set({
     running: toggle
   });
 }
 
-function autoResumeRefresher() {
-  if (resumeSuccess) {
-    autoResume(false);
-    autoResume(true);
-    resumeSuccess = false;
-  }
-}
-
-setInterval(autoResumeRefresher, 3000);
-
 // load options
-chrome.storage.sync.get(['paused'], function(result) {
+chrome.storage.local.get(['paused'], function(result) {
   pausedOption = result.paused;
 });
 
-chrome.storage.sync.get(['sec'], function(result) {
+chrome.storage.local.get(['sec'], function(result) {
   intervalForCheck = timeBoundary(result.sec);
 });
 
 // if last state is on, start Auto resume
-chrome.storage.sync.get(['running'], function(result) {
+chrome.storage.local.get(['running'], function(result) {
   if (result.running) {
     autoResume(true);
   }
@@ -121,7 +110,7 @@ chrome.extension.onConnect.addListener(function(port) {
     intervalForCheck = timeBoundary(message.sec);
     pausedOption = message.paused;
 
-    chrome.storage.sync.set({
+    chrome.storage.local.set({
       paused: pausedOption,
       sec: intervalForCheck
     });

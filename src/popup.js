@@ -39,7 +39,7 @@ function logging(str, _logTextArea) {
   let today = new Date();
   var newLogText = today.toLocaleString() + "\n" + str + "\n\n";
 
-  chrome.storage.sync.get(['localSavedLog'], function(result) {
+  chrome.storage.local.get(['localSavedLog'], function(result) {
     if (typeof result.localSavedLog == "undefined") {
       result.localSavedLog = "";
     }
@@ -48,7 +48,7 @@ function logging(str, _logTextArea) {
     _logTextArea.value = getMaximunLengthString(result.localSavedLog);
     _logTextArea.scrollTop = _logTextArea.scrollHeight;
 
-    chrome.storage.sync.set({
+    chrome.storage.local.set({
       localSavedLog: _logTextArea.value
     });
 
@@ -79,13 +79,13 @@ window.onload = function() {
 
   clearButton.addEventListener("click", function() {
     logTextArea.value = "";
-    chrome.storage.sync.set({
+    chrome.storage.local.set({
       localSavedLog: logTextArea.value
     });
   });
 
   //Load values in local storage
-  chrome.storage.sync.get(['paused'], function(result) {
+  chrome.storage.local.get(['paused'], function(result) {
     if (result.paused) {
       pausedSetting.checked = true;
     } else {
@@ -93,7 +93,7 @@ window.onload = function() {
     }
   });
 
-  chrome.storage.sync.get(['sec'], function(result) {
+  chrome.storage.local.get(['sec'], function(result) {
     if (typeof result.sec == "undefined") {
       // default value : 3
       result.sec = 3;
@@ -101,7 +101,7 @@ window.onload = function() {
     intervalSetting.value = result.sec;
   });
 
-  chrome.storage.sync.get(['running'], function(result) {
+  chrome.storage.local.get(['running'], function(result) {
     if (result.running) {
       startSwitch.checked = true;
     } else {
@@ -109,7 +109,7 @@ window.onload = function() {
     }
   });
 
-  chrome.storage.sync.get(['localSavedLog'], function(result) {
+  chrome.storage.local.get(['localSavedLog'], function(result) {
     if (typeof result.localSavedLog == "undefined") {
       result.localSavedLog = "";
     }
