@@ -62,8 +62,9 @@ function resumeDownload(DownloadItems) {
   DownloadItems.forEach(function(item) {
     if (item.canResume) {
       if (!item.paused || pausedOption) {
-        chrome.downloads.resume(item.id);
-        logging(("resume :\n" + item.filename));
+        chrome.downloads.resume(item.id, function(){
+          logging(("resume :\n" + item.filename));
+        });
       }
     }
   });
