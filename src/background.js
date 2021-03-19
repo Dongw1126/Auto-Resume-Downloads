@@ -78,25 +78,8 @@ function downloadManager() {
 
 function autoResume(toggle) {
   if (toggle) {
-    intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
-    newInterval = setInterval(downloadManager, intervalForCheck * 1000);
-    intervalFunctionArray.push(newInterval);
-  } else {
-    intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
-  }
-
-  chrome.storage.local.set({
-    running: toggle
-  });
-}
-
-function autoResume2(toggle) {
-  if (toggle) {
     chrome.alarms.clearAll();
     t = intervalForCheck / 60;
-    /*alarm = {
-      periodInMinutes: t
-    };*/
     chrome.alarms.create("autoResume", {periodInMinutes : t});
   } else {
     chrome.alarms.clearAll();
@@ -123,7 +106,7 @@ chrome.storage.local.get(['sec'], function(result) {
 // if last state is on, start Auto resume
 chrome.storage.local.get(['running'], function(result) {
   if (result.running) {
-    autoResume2(true);
+    autoResume(true);
   }
 });
 
@@ -141,10 +124,10 @@ chrome.extension.onConnect.addListener(function(port) {
 
     if (message.running == true) {
       // auto resume start
-      autoResume2(true);
+      autoResume(true);
     } else {
       // auto resume stop
-      autoResume2(false);
+      autoResume(false);
     }
   });
 });
