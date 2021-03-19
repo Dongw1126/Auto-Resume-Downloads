@@ -59,11 +59,13 @@ function logging(str) {
 }
 
 function resumeDownload(DownloadItems) {
+  console.log("running");
   DownloadItems.forEach(function(item) {
     if (item.canResume) {
       if (!item.paused || pausedOption) {
-        chrome.downloads.resume(item.id, function(){
+        chrome.downloads.resume(item.id, function() {
           logging(("resume :\n" + item.filename));
+          console.log(item);
         });
       }
     }
@@ -88,6 +90,27 @@ function autoResume(toggle) {
   });
 }
 
+function autoResume2(toggle) {
+  if (toggle) {
+    chrome.alarms.clearAll();
+    t = intervalForCheck / 60;
+    /*alarm = {
+      periodInMinutes: t
+    };*/
+    chrome.alarms.create("autoResume", {periodInMinutes : t});
+  } else {
+    chrome.alarms.clearAll();
+  }
+
+  chrome.storage.local.set({
+    running: toggle
+  });
+}
+
+chrome.alarms.onAlarm.addListener(function(alarm) {
+  downloadManager();
+});
+
 // load options
 chrome.storage.local.get(['paused'], function(result) {
   pausedOption = result.paused;
@@ -100,7 +123,7 @@ chrome.storage.local.get(['sec'], function(result) {
 // if last state is on, start Auto resume
 chrome.storage.local.get(['running'], function(result) {
   if (result.running) {
-    autoResume(true);
+    autoResume2(true);
   }
 });
 
@@ -118,10 +141,10 @@ chrome.extension.onConnect.addListener(function(port) {
 
     if (message.running == true) {
       // auto resume start
-      autoResume(true);
+      autoResume2(true);
     } else {
       // auto resume stop
-      autoResume(false);
+      autoResume2(false);
     }
   });
 });

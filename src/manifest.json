@@ -14,7 +14,8 @@
 
   "permissions": [
     "storage",
-    "downloads"
+    "downloads",
+    "alarms"
   ],
 
   "background": {
