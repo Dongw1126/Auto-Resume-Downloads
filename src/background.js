@@ -59,7 +59,6 @@ function logging(str) {
 }
 
 function resumeDownload(DownloadItems) {
-  console.log(chrome.downloads.resume);
   DownloadItems.forEach(function(item) {
     if (item.canResume) {
       if (!item.paused || pausedOption) {
