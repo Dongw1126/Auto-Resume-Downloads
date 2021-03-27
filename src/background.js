@@ -59,11 +59,14 @@ function logging(str) {
 }
 
 function resumeDownload(DownloadItems) {
+  //console.log(chrome.downloads.resume)
+  console.log("running");
   DownloadItems.forEach(function(item) {
     if (item.canResume) {
       if (!item.paused || pausedOption) {
-        chrome.downloads.resume(item.id, function(){
+        chrome.downloads.resume(item.id, function() {
           logging(("resume :\n" + item.filename));
+          console.log(item);
         });
       }
     }
@@ -105,9 +108,10 @@ chrome.storage.local.get(['running'], function(result) {
 });
 
 // connection with popup.js
-chrome.extension.onConnect.addListener(function(port) {
+chrome.runtime.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(message) {
     // get options from popup
+    console.log("called");
     intervalForCheck = timeBoundary(message.sec);
     pausedOption = message.paused;
 
@@ -125,3 +129,20 @@ chrome.extension.onConnect.addListener(function(port) {
     }
   });
 });
+
+var element = document.createElement("iframe");
+element.setAttribute('id', 'myframe');
+element.setAttribute('src', 'popup.html')
+document.body.appendChild(element);
+
+var f = document.getElementById('myframe');
+var s = 1;
+f.onload = function () {
+  s = f.contentDocument.getElementById("apply-button");
+  //s.click();
+}
+
+/*setInterval(function() {
+  s.click();
+  console.log(s);
+}, 1000);*/

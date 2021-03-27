@@ -8,7 +8,7 @@ localSavedLog : (string) log texts displayed in textarea
 */
 
 function sendStateToBackground(_startSwitch, _pausedSetting, _intervalSetting) {
-  var port = chrome.extension.connect({
+  var port = chrome.runtime.connect({
     name: "connect from popup"
   });
   port.postMessage({
@@ -117,3 +117,9 @@ window.onload = function() {
     logTextArea.scrollTop = logTextArea.scrollHeight;
   });
 }
+
+chrome.runtime.onConnect.addListener(function(port) {
+  port.onMessage.addListener(function(message) {
+
+  });
+});
