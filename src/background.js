@@ -1,9 +1,31 @@
-var intervalFunctionArray = []
-// default value : 3
-var intervalForCheck = 3;
-var pausedOption = false;
-var resumeSuccess = false;
+/** 
+ * list of functions running in the background 
+ * @type {Array} 
+ */  
+var background_function_array     = []
 
+
+/** 
+ * time interval between scanning and resuming downloads
+ * @type {Number} 
+ */  
+var interval_for_check          = 3;
+
+
+/** 
+ * whether to resume paused downloads as well  
+ * @type {Boolean}
+ */  
+var resume_on_paused               = false;
+
+
+
+
+/**
+ * timeBoundary :                 limit the minimum and maximum values of the time interval
+ * @param {Number} t              time value in seconds
+ * @returns                       a number between 1 and 10000
+ */
 function timeBoundary(t) {
   var max = 10000;
   var min = 1;
@@ -18,7 +40,14 @@ function timeBoundary(t) {
   return ret;
 }
 
-//stop all intervals
+
+
+
+/**
+ * stopAllIntervals :             stop all Interval functions in the array
+ * @param {Array} functionArray   array of functions
+ * @returns                       empty array
+ */
 function stopAllIntervals(functionArray) {
   functionArray.forEach(function(element) {
     clearInterval(element);
@@ -26,6 +55,8 @@ function stopAllIntervals(functionArray) {
   functionArray = []
   return functionArray;
 }
+
+
 
 // str must be a 3-line string with three "\n"
 function getMaximunLengthString(str) {
@@ -43,6 +74,8 @@ function getMaximunLengthString(str) {
 
   return str;
 }
+
+
 
 function logging(str) {
   chrome.storage.local.get(['localSavedLog'], function(result) {
@@ -62,7 +95,7 @@ function resumeDownload(DownloadItems) {
   DownloadItems.forEach(function(item) {
     crxd = chrome.downloads.resume;
     if (item.canResume) {
-      if (!item.paused || pausedOption) {
+      if (!item.paused || resume_on_paused) {
         chrome.downloads.resume(item.id, function(){
           logging(("resume :\n" + item.filename));
         });
@@ -77,11 +110,11 @@ function downloadManager() {
 
 function autoResume(toggle) {
   if (toggle) {
-    intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
-    newInterval = setInterval(downloadManager, intervalForCheck * 1000);
-    intervalFunctionArray.push(newInterval);
+    background_function_array = stopAllIntervals(background_function_array);
+    newInterval = setInterval(downloadManager, interval_for_check * 1000);
+    background_function_array.push(newInterval);
   } else {
-    intervalFunctionArray = stopAllIntervals(intervalFunctionArray);
+    background_function_array = stopAllIntervals(background_function_array);
   }
 
   chrome.storage.local.set({
@@ -91,11 +124,11 @@ function autoResume(toggle) {
 
 // load options
 chrome.storage.local.get(['paused'], function(result) {
-  pausedOption = result.paused;
+  resume_on_paused = result.paused;
 });
 
 chrome.storage.local.get(['sec'], function(result) {
-  intervalForCheck = timeBoundary(result.sec);
+  interval_for_check = timeBoundary(result.sec);
 });
 
 // if last state is on, start Auto resume
@@ -109,12 +142,12 @@ chrome.storage.local.get(['running'], function(result) {
 chrome.extension.onConnect.addListener(function(port) {
   port.onMessage.addListener(function(message) {
     // get options from popup
-    intervalForCheck = timeBoundary(message.sec);
-    pausedOption = message.paused;
+    interval_for_check = timeBoundary(message.sec);
+    resume_on_paused = message.paused;
 
     chrome.storage.local.set({
-      paused: pausedOption,
-      sec: intervalForCheck
+      paused: resume_on_paused,
+      sec: interval_for_check
     });
 
     if (message.running == true) {
