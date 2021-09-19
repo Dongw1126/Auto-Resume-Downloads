@@ -1,6 +1,10 @@
 /**  default download resume time interval */  
 const DEFAULT_INTERVAL            = 3;
 
+/**  maximum length of log (in bytes) */  
+const MAX_LOG_BYTE              = 7000;
+
+
 /**  list of functions running in the background */  
 var background_function_array     = [];
 
@@ -41,19 +45,31 @@ function stopAllIntervals(functionArray) {
     clearInterval(element);
   });
   functionArray = []
+
   return functionArray;
 }
 
-
-
-// str must be a 3-line string with three "\n"
-function getMaximunLengthString(str) {
-  maxByte = 7000;
+/**
+ * getLimitedByteLog :            Limited length of download resume history log
+ * @param {String} str            string to check
+ * @returns 
+ * 
+ * Due to the limited capacity of chrome.storage.local, 
+ * we need to limit the length of the log to less than a certain number of bytes.
+ */
+function getLimitedByteLog(str) {
+  maxByte = MAX_LOG_BYTE;
+  
   byteLength = (function(s, b, i, c) {
     for (b = i = 0; c = s.charCodeAt(i++); b += c >> 11 ? 3 : c >> 7 ? 2 : 1);
     return b;
   })(str);
 
+  /*
+   * The download resume log is recorded by 3 lines, 
+   * and when the limit is exceeded, 
+   * 3 lines are discarded from the front 
+   */
   if (byteLength > maxByte) {
     str = str.substring(str.indexOf('\n') + 1);
     str = str.substring(str.indexOf('\n') + 1);
@@ -67,12 +83,12 @@ function getMaximunLengthString(str) {
 
 function logging(str) {
   chrome.storage.local.get(['localSavedLog'], function(result) {
-    // since the connection with popup.js may be disconnected, save logs in local storage
+    /* since the connection with popup.js may be disconnected, save logs in local storage */
     if (typeof result.localSavedLog == "undefined") {
       result.localSavedLog = "";
     }
     var updatedLog = result.localSavedLog + str + "\n\n";
-    updatedLog = getMaximunLengthString(updatedLog);
+    updatedLog = getLimitedByteLog(updatedLog);
     chrome.storage.local.set({
       localSavedLog: updatedLog
     });
