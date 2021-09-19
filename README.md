@@ -26,7 +26,7 @@ Auto Download Resume Chrome extension
 1. Tap the icon to open the window.  
 2. Turn on the switch to run the program.   
   The program will resume automatically stopped downloads in the background  
-  (If it doesn't work, try turning the switch off and on)
+  (⚠️If the program does not work properly, click the toggle button a few times and try again)
 3. Checking <code>Apply to paused items</code> setting will automatically resume the download that you paused.
 4. <code>Check time interval</code> sets the time interval for scanning stopped downloads.
 5. Settings take effect when the apply button is pressed.
