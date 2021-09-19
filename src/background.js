@@ -1,24 +1,14 @@
-/** 
- * list of functions running in the background 
- * @type {Array} 
- */  
-var background_function_array     = []
+/**  default download resume time interval */  
+const DEFAULT_INTERVAL            = 3;
 
+/**  list of functions running in the background */  
+var background_function_array     = [];
 
-/** 
- * time interval between scanning and resuming downloads
- * @type {Number} 
- */  
-var interval_for_check          = 3;
+/**  time interval between scanning and resuming downloads */  
+var interval_for_check            = DEFAULT_INTERVAL;
 
-
-/** 
- * whether to resume paused downloads as well  
- * @type {Boolean}
- */  
-var resume_on_paused               = false;
-
-
+/** whether to resume paused downloads as well */  
+var resume_on_paused              = false;
 
 
 /**
@@ -29,19 +19,17 @@ var resume_on_paused               = false;
 function timeBoundary(t) {
   var max = 10000;
   var min = 1;
-
   ret = Number(t);
-  if (ret <= 0) {
+
+  if (ret <= 0)
     ret = min;
-  } else if (ret > max) {
+  else if (ret > max)
     ret = max;
-  }
+  else if (isNaN(ret))
+    ret = DEFAULT_INTERVAL;
 
   return ret;
 }
-
-
-
 
 /**
  * stopAllIntervals :             stop all Interval functions in the array
