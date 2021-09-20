@@ -1,17 +1,17 @@
-/** default download resume time interval (in seconds) */  
+/* default download resume time interval (in seconds) */  
 const DEFAULT_INTERVAL            = 3;
 
-/** maximum length of log (in bytes) */  
-const MAX_LOG_BYTE              = 7000;
+/* maximum length of log (in bytes) */  
+const MAX_LOG_BYTE                = 7000;
 
 
-/** list of functions running in the background */  
+/* list of functions running in the background */  
 var background_function_array     = [];
 
-/** time interval between scanning and resuming downloads */  
+/* time interval between scanning and resuming downloads */  
 var interval_for_check            = DEFAULT_INTERVAL;
 
-/** whether to resume paused downloads as well */  
+/* whether to resume paused downloads as well */  
 var resume_on_paused              = false;
 
 
