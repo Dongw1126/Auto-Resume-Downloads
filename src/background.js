@@ -109,7 +109,6 @@ function logging(str) {
  */
 function resumeDownload(DownloadItems) {
   DownloadItems.forEach(function(item) {
-    console.log(item);
     crxd = chrome.downloads.resume;
     if (item.canResume) {
       if (!item.paused || resume_on_paused) {
