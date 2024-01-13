@@ -117,7 +117,7 @@ function resumeDownload(DownloadItems) {
  * downloadManager :              search for downloads and call resumeDownload
  * @param {Object} query          Download item search criteria
  */
-function downloadManager(query = {}) {
+function downloadManager(query = { orderBy: ['-startTime'] }) {
     chrome.downloads.search(query, resumeDownload);
 }
 
