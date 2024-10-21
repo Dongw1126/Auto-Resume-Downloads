@@ -3,7 +3,8 @@
 <br> 
 <img src="https://user-images.githubusercontent.com/48395704/108146248-2a6af480-7110-11eb-8c14-a04658488ce5.png" width="42%" height="42%">     
   
-Auto Download Resume Chrome extension
+Auto Download Resume Chrome extension  
+(⚠️ In some cases, Auto Resume Downloads are disabled by the Chrome browser API spec. Sorry, but in that case, please toggle the extension's switch off and on to resume your downloads.)
 
 ## Features
 * Automatically resume downloading
